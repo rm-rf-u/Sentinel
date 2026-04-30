@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--
+        Splash screen theme — set as the initial activity theme in AndroidManifest.
+        postSplashScreenTheme hands off to the main app theme once loading is done.
+    -->
+    <style name="Theme.Sentinel.Starting" parent="Theme.SplashScreen">
+        <!-- Cream background behind the icon -->
+        <item name="windowSplashScreenBackground">#FFF8F1</item>
+        <!-- The shield+heart icon -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <!-- Apricot circle behind the icon on the splash screen -->
+        <item name="windowSplashScreenIconBackgroundColor">#F4A261</item>
+        <item name="postSplashScreenTheme">@style/Theme.Sentinel</item>
+    </style>
+
+    <!--
+        Main app theme — pure Compose app, so only window-level properties live here.
+        All Material3 color/typography theming is handled in Compose via SentinelTheme.
+        Parent is AppCompat (transitive via activity-compose) — no extra dep needed.
+    -->
+    <style name="Theme.Sentinel" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">#FFF8F1</item>
+        <item name="android:navigationBarColor">#FFFFFF</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">#FFF8F1</item>
+    </style>
+
+</resources>

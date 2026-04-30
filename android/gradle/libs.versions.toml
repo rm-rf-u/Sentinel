@@ -1,0 +1,62 @@
+[versions]
+agp               = "8.7.3"
+kotlin            = "2.1.0"
+ksp               = "2.1.0-1.0.29"
+hilt              = "2.53.1"
+compose-bom       = "2024.12.01"
+navigation        = "2.8.5"
+lifecycle         = "2.8.7"
+activity          = "1.9.3"
+core-ktx          = "1.15.0"
+retrofit          = "2.11.0"
+okhttp            = "4.12.0"
+coroutines        = "1.9.0"
+datastore         = "1.1.1"
+firebase-bom      = "33.7.0"
+webrtc            = "125.6422.06.1"
+gson              = "2.11.0"
+splashscreen      = "1.0.1"
+
+[libraries]
+androidx-core-ktx          = { group = "androidx.core",            name = "core-ktx",                  version.ref = "core-ktx" }
+androidx-lifecycle-runtime  = { group = "androidx.lifecycle",       name = "lifecycle-runtime-ktx",     version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel= { group = "androidx.lifecycle",       name = "lifecycle-viewmodel-compose",version.ref = "lifecycle" }
+androidx-activity-compose   = { group = "androidx.activity",        name = "activity-compose",           version.ref = "activity" }
+
+compose-bom                = { group = "androidx.compose",          name = "compose-bom",               version.ref = "compose-bom" }
+compose-ui                 = { group = "androidx.compose.ui",       name = "ui" }
+compose-ui-graphics        = { group = "androidx.compose.ui",       name = "ui-graphics" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui",       name = "ui-tooling-preview" }
+compose-material3          = { group = "androidx.compose.material3",name = "material3" }
+compose-icons              = { group = "androidx.compose.material",  name = "material-icons-extended" }
+navigation-compose         = { group = "androidx.navigation",        name = "navigation-compose",        version.ref = "navigation" }
+
+hilt-android               = { group = "com.google.dagger",         name = "hilt-android",              version.ref = "hilt" }
+hilt-compiler              = { group = "com.google.dagger",         name = "hilt-compiler",             version.ref = "hilt" }
+hilt-navigation-compose    = { group = "androidx.hilt",             name = "hilt-navigation-compose",   version = "1.2.0" }
+
+retrofit                   = { group = "com.squareup.retrofit2",    name = "retrofit",                  version.ref = "retrofit" }
+retrofit-gson              = { group = "com.squareup.retrofit2",    name = "converter-gson",            version.ref = "retrofit" }
+okhttp                     = { group = "com.squareup.okhttp3",      name = "okhttp",                    version.ref = "okhttp" }
+okhttp-logging             = { group = "com.squareup.okhttp3",      name = "logging-interceptor",       version.ref = "okhttp" }
+gson                       = { group = "com.google.code.gson",      name = "gson",                      version.ref = "gson" }
+
+coroutines-android         = { group = "org.jetbrains.kotlinx",     name = "kotlinx-coroutines-android",version.ref = "coroutines" }
+datastore-prefs            = { group = "androidx.datastore",        name = "datastore-preferences",     version.ref = "datastore" }
+
+firebase-bom               = { group = "com.google.firebase",       name = "firebase-bom",              version.ref = "firebase-bom" }
+firebase-messaging         = { group = "com.google.firebase",       name = "firebase-messaging-ktx" }
+
+webrtc                     = { group = "io.github.webrtc-sdk",      name = "android",                   version.ref = "webrtc" }
+splashscreen               = { group = "androidx.core",             name = "core-splashscreen",          version.ref = "splashscreen" }
+
+compose-ui-tooling         = { group = "androidx.compose.ui",       name = "ui-tooling" }
+compose-ui-test-manifest   = { group = "androidx.compose.ui",       name = "ui-test-manifest" }
+
+[plugins]
+android-application = { id = "com.android.application",          version.ref = "agp" }
+kotlin-android      = { id = "org.jetbrains.kotlin.android",     version.ref = "kotlin" }
+kotlin-compose      = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+ksp                 = { id = "com.google.devtools.ksp",           version.ref = "ksp" }
+hilt                = { id = "com.google.dagger.hilt.android",    version.ref = "hilt" }
+google-services     = { id = "com.google.gms.google-services",   version = "4.4.2" }

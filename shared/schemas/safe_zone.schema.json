@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "safe_zone",
+  "title": "SafeZone",
+  "description": "User-defined polygon zone and its enforcement mode",
+  "type": "object",
+  "required": ["polygon", "mode"],
+  "additionalProperties": false,
+  "properties": {
+    "polygon": {
+      "type": "array",
+      "description": "Ordered list of [x, y] vertices in normalized [0,1] coordinates",
+      "minItems": 3,
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "items": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      }
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["inside", "outside"],
+      "description": "inside: alert when child leaves polygon. outside: alert when child enters polygon."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC ISO-8601"
+    }
+  }
+}

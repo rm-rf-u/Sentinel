@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sentinel</string>
+
+    <!-- Navigation -->
+    <string name="nav_live">실시간 보기</string>
+    <string name="nav_events">이벤트 로그</string>
+    <string name="nav_settings">설정</string>
+
+    <!-- Live screen -->
+    <string name="live_title">실시간 모니터링</string>
+    <string name="live_connecting">연결 중…</string>
+    <string name="live_connected">연결됨</string>
+    <string name="live_disconnected">연결 끊김</string>
+    <string name="live_reconnect">재연결</string>
+    <string name="live_draw_zone">안전 구역 그리기</string>
+    <string name="live_clear_zone">구역 삭제</string>
+    <string name="live_save_zone">저장</string>
+    <string name="live_saving">저장 중…</string>
+    <string name="live_cancel">취소</string>
+    <string name="live_hint_draw">화면을 탭하여 꼭짓점을 추가하세요</string>
+    <string name="live_hint_min_vertices">꼭짓점 %1$d개 — 최소 3개 필요</string>
+    <string name="live_hint_close">첫 점 탭 또는 완료 버튼으로 완료</string>
+    <string name="live_redraw">다시 그리기</string>
+    <string name="live_finish">완료</string>
+
+    <!-- Zone mode -->
+    <string name="zone_mode_inside">안쪽 유지</string>
+    <string name="zone_mode_outside">바깥쪽 유지</string>
+
+    <!-- Events screen -->
+    <string name="events_title">이벤트 로그</string>
+    <string name="events_empty">이벤트 없음</string>
+    <string name="events_load_more">더 보기</string>
+    <string name="filter_all">전체</string>
+    <string name="filter_zone">구역 이탈</string>
+    <string name="filter_prone">엎드린 자세</string>
+    <string name="filter_cry">울음</string>
+
+    <!-- Event types -->
+    <string name="event_zone_violation">안전 구역 이탈</string>
+    <string name="event_prone_position">엎드린 자세 감지</string>
+    <string name="event_cry_detected">울음 감지</string>
+    <string name="event_confidence">신뢰도 %1$d%%</string>
+    <string name="event_just_now">방금 전</string>
+    <string name="event_minutes_ago">%1$d분 전</string>
+    <string name="event_hours_ago">%1$d시간 전</string>
+
+    <!-- Settings screen -->
+    <string name="settings_title">설정</string>
+    <string name="settings_server">서버 주소</string>
+    <string name="settings_server_hint">http://your-mac.ts.net:8000</string>
+    <string name="settings_sensitivity">감도 설정</string>
+    <string name="settings_zone_seconds">구역 이탈 판정 시간</string>
+    <string name="settings_prone_seconds">엎드린 자세 판정 시간</string>
+    <string name="settings_cry_threshold">울음 감지 임계값</string>
+    <string name="settings_cry_window">울음 감지 윈도우</string>
+    <string name="settings_quiet_hours">방해 금지 시간</string>
+    <string name="settings_quiet_hours_enable">방해 금지 시간 사용</string>
+    <string name="settings_quiet_start">시작</string>
+    <string name="settings_quiet_end">종료</string>
+    <string name="settings_notifications">알림</string>
+    <string name="settings_fcm_enabled">푸시 알림 사용</string>
+    <string name="settings_save">저장</string>
+    <string name="settings_saved">저장되었습니다</string>
+    <string name="settings_seconds_unit">초</string>
+    <string name="settings_percent_unit">%%</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_subtitle">아기를 안전하게 지켜보세요.\n서버 주소를 입력하여 시작하세요.</string>
+    <string name="onboarding_url_label">서버 주소 (Tailscale)</string>
+    <string name="onboarding_connect">연결</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_id">sentinel_events</string>
+    <string name="notif_channel_name">안전 알림</string>
+    <string name="notif_channel_desc">아기 안전 이벤트 알림</string>
+</resources>

@@ -1,0 +1,62 @@
+{
+  "nav": {
+    "liveView": "Live View",
+    "events": "Event Log",
+    "settings": "Settings"
+  },
+  "liveView": {
+    "title": "Live Monitor",
+    "connecting": "Connecting...",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "drawZone": "Draw Safe Zone",
+    "clearZone": "Clear Zone",
+    "saveZone": "Save",
+    "zoneMode": {
+      "label": "Zone mode",
+      "inside": "Stay inside",
+      "outside": "Stay outside"
+    }
+  },
+  "events": {
+    "title": "Event Log",
+    "empty": "No events",
+    "types": {
+      "zone_violation": "Zone violation",
+      "prone_position": "Prone position detected",
+      "cry_detected": "Crying detected"
+    },
+    "severity": {
+      "info": "Info",
+      "warning": "Warning",
+      "danger": "Danger"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "sensitivity": {
+      "label": "Sensitivity",
+      "zoneViolationSeconds": "Zone violation delay (s)",
+      "pronePositionSeconds": "Prone position delay (s)",
+      "cryScoreThreshold": "Cry score threshold",
+      "cryWindowSeconds": "Cry window (s)"
+    },
+    "quietHours": {
+      "label": "Quiet hours",
+      "enabled": "Enable",
+      "start": "Start",
+      "end": "End"
+    },
+    "notifications": {
+      "label": "Notifications",
+      "fcmEnabled": "Enable push notifications"
+    },
+    "save": "Save",
+    "saved": "Saved"
+  },
+  "notifications": {
+    "zone_violation": "Baby left the safe zone. Please check.",
+    "prone_position": "Prone position detected. Please check on the baby.",
+    "cry_detected": "Baby is crying."
+  }
+}

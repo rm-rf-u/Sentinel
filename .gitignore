@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Backend data (models, db, secrets)
+backend/data/
+backend/.env
+
+# Root-level data (SQLite DB)
+data/
+
+# Web
+web/.next/
+web/node_modules/
+web/.env.local
+
+# Android
+android/.gradle/
+android/local.properties
+android/app/build/
+android/app/google-services.json
+android/*.keystore
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp

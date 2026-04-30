@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "settings",
+  "title": "Settings",
+  "description": "User-configurable runtime settings",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "sensitivity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "zone_violation_seconds": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 30.0,
+          "default": 2.0,
+          "description": "How long a zone rule must be continuously violated before an event fires"
+        },
+        "prone_position_seconds": {
+          "type": "number",
+          "minimum": 1.0,
+          "maximum": 60.0,
+          "default": 5.0,
+          "description": "How long a prone position must be sustained before an event fires"
+        },
+        "cry_score_threshold": {
+          "type": "number",
+          "minimum": 0.1,
+          "maximum": 1.0,
+          "default": 0.6,
+          "description": "YAMNet aggregated score required to classify as crying"
+        },
+        "cry_window_seconds": {
+          "type": "number",
+          "minimum": 1.0,
+          "maximum": 10.0,
+          "default": 3.0,
+          "description": "Window over which cry scores are aggregated"
+        }
+      }
+    },
+    "quiet_hours": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "start": {
+          "type": "string",
+          "pattern": "^[0-2][0-9]:[0-5][0-9]$",
+          "default": "22:00",
+          "description": "Local time HH:MM"
+        },
+        "end": {
+          "type": "string",
+          "pattern": "^[0-2][0-9]:[0-5][0-9]$",
+          "default": "07:00",
+          "description": "Local time HH:MM"
+        }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fcm_enabled": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
+  }
+}

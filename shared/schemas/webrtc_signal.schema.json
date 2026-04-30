@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "webrtc_signal",
+  "title": "WebRTCSignal",
+  "description": "SDP offer/answer shapes for the /api/webrtc/offer endpoint",
+  "definitions": {
+    "OfferRequest": {
+      "type": "object",
+      "required": ["sdp", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "sdp": { "type": "string" },
+        "type": { "type": "string", "enum": ["offer"] }
+      }
+    },
+    "AnswerResponse": {
+      "type": "object",
+      "required": ["sdp", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "sdp": { "type": "string" },
+        "type": { "type": "string", "enum": ["answer"] }
+      }
+    }
+  }
+}
