@@ -48,7 +48,10 @@
 
     <!-- Settings screen -->
     <string name="settings_title">설정</string>
-    <string name="settings_server">서버 주소</string>
+    <string name="settings_server">서버 연결</string>
+    <string name="settings_server_address">서버 주소</string>
+    <string name="settings_server_address_hint">예: sentinel-mac.ts.net 또는 100.64.1.1</string>
+    <string name="settings_server_port">포트</string>
     <string name="settings_server_hint">http://your-mac.ts.net:8000</string>
     <string name="settings_sensitivity">감도 설정</string>
     <string name="settings_zone_seconds">구역 이탈 판정 시간</string>
@@ -66,9 +69,16 @@
     <string name="settings_seconds_unit">초</string>
     <string name="settings_percent_unit">%%</string>
 
+    <!-- Disclaimer -->
+    <string name="disclaimer_title">안전 안내</string>
+    <string name="disclaimer_body">Sentinel은 아기 모니터링 보조 도구입니다. 의료기기가 아니며 의료적 판단을 대체하지 않습니다. 항상 직접 확인 및 보호자의 주의와 함께 사용하세요.</string>
+
     <!-- Onboarding -->
     <string name="onboarding_subtitle">아기를 안전하게 지켜보세요.\n서버 주소를 입력하여 시작하세요.</string>
     <string name="onboarding_url_label">서버 주소 (Tailscale)</string>
+    <string name="onboarding_host_label">서버 주소 (Tailscale)</string>
+    <string name="onboarding_host_hint">예: sentinel-mac.ts.net 또는 100.64.1.1</string>
+    <string name="onboarding_port_label">포트</string>
     <string name="onboarding_connect">연결</string>
 
     <!-- Notifications -->

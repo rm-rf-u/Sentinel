@@ -30,9 +30,10 @@ fun LiveScreen(vm: LiveViewModel = hiltViewModel()) {
     DisposableEffect(Unit) { onDispose { vm.disconnect() } }
 
     LaunchedEffect(rendererRef) {
-        vm.webRtcClient.onVideoTrack = { track ->
-            rendererRef?.let { track.addSink(it) }
-        }
+        val renderer = rendererRef ?: return@LaunchedEffect
+        vm.webRtcClient.onVideoTrack = { track -> track.addSink(renderer) }
+        // Attach sink to a track that arrived before the renderer was ready
+        vm.webRtcClient.videoTrack?.addSink(renderer)
     }
 
     Box(

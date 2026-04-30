@@ -45,8 +45,6 @@ fun EventsScreen(vm: EventsViewModel = hiltViewModel()) {
             .widthIn(max = if (isTablet) 900.dp else Int.MAX_VALUE.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text(stringResource(R.string.events_title), style = MaterialTheme.typography.titleLarge)
-
         // Filter chips
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             FilterChip(null, filter, stringResource(R.string.filter_all)) { filter = it }

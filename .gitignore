@@ -18,7 +18,7 @@ backend/data/
 backend/.env
 
 # Root-level data (SQLite DB)
-data/
+/data/
 
 # Web
 web/.next/

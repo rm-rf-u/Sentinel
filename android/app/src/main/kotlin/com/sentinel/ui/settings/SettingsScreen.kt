@@ -41,17 +41,25 @@ fun SettingsScreen(vm: SettingsViewModel = hiltViewModel()) {
             .widthIn(max = if (isTablet) 700.dp else Int.MAX_VALUE.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text(stringResource(R.string.settings_title), style = MaterialTheme.typography.titleLarge)
-
-        // Server URL
+        // Server connection
         SettingsSection(stringResource(R.string.settings_server)) {
             OutlinedTextField(
-                value = ui.baseUrl,
-                onValueChange = vm::setBaseUrl,
-                placeholder = { Text(stringResource(R.string.settings_server_hint), style = MaterialTheme.typography.bodySmall) },
+                value = ui.serverHost,
+                onValueChange = vm::setServerHost,
+                label = { Text(stringResource(R.string.settings_server_address), style = MaterialTheme.typography.labelSmall) },
+                placeholder = { Text(stringResource(R.string.settings_server_address_hint), style = MaterialTheme.typography.bodySmall) },
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Next),
                 modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+            )
+            OutlinedTextField(
+                value = ui.serverPort,
+                onValueChange = vm::setServerPort,
+                label = { Text(stringResource(R.string.settings_server_port), style = MaterialTheme.typography.labelSmall) },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                modifier = Modifier.width(120.dp),
                 shape = RoundedCornerShape(12.dp),
             )
         }

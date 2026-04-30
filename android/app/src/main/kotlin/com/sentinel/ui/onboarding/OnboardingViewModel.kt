@@ -20,7 +20,8 @@ class OnboardingViewModel @Inject constructor(
         initialValue = null, // null = loading
     )
 
-    fun connect(url: String) {
+    fun connect(host: String, port: String) {
+        val url = "http://${host.trim()}:${port.trim()}"
         viewModelScope.launch { prefs.setBaseUrl(url) }
     }
 }
