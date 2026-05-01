@@ -2,7 +2,9 @@ package com.sentinel
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -48,10 +50,16 @@ import com.sentinel.ui.live.LiveScreen
 import com.sentinel.ui.live.LiveViewModel
 import com.sentinel.ui.live.EditorState
 import com.sentinel.ui.onboarding.OnboardingScreen
+import com.sentinel.ui.onboarding.WelcomeScreen
 import com.sentinel.ui.settings.SettingsScreen
 import com.sentinel.ui.theme.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.util.Locale
+
+private const val LANG_PREFS = "sentinel_lang_prefs"
+private const val LANG_KEY   = "lang"
+private const val LANG_CHOSEN_KEY = "lang_chosen"
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -59,6 +67,15 @@ class MainActivity : ComponentActivity() {
     private val notifPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { /* handled silently */ }
+
+    override fun attachBaseContext(newBase: Context) {
+        val lang = newBase
+            .getSharedPreferences(LANG_PREFS, Context.MODE_PRIVATE)
+            .getString(LANG_KEY, "ko") ?: "ko"
+        val config = Configuration(newBase.resources.configuration)
+        config.setLocale(Locale(lang))
+        super.attachBaseContext(newBase.createConfigurationContext(config))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -89,14 +106,32 @@ private fun AppContent() {
     // Show nothing until DataStore resolves (avoids flicker)
     if (onboarded == null) return
 
+    LaunchedEffect(onboarded) {
+        if (onboarded == true) onboardingVm.refreshFcmToken()
+    }
+
     if (onboarded == false) {
-        // Force portrait for onboarding
         val activity = LocalContext.current as Activity
         LaunchedEffect(Unit) {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
+        val langChosen = remember {
+            activity.getSharedPreferences(LANG_PREFS, Context.MODE_PRIVATE)
+                .getBoolean(LANG_CHOSEN_KEY, false)
+        }
         com.sentinel.ui.theme.SentinelTheme {
-            OnboardingScreen(onConnect = onboardingVm::connect)
+            if (!langChosen) {
+                WelcomeScreen(onSelect = { lang ->
+                    activity.getSharedPreferences(LANG_PREFS, Context.MODE_PRIVATE)
+                        .edit()
+                        .putString(LANG_KEY, lang)
+                        .putBoolean(LANG_CHOSEN_KEY, true)
+                        .apply()
+                    activity.recreate()
+                })
+            } else {
+                OnboardingScreen(onConnect = onboardingVm::connect)
+            }
         }
         return
     }
@@ -191,8 +226,8 @@ private fun MainContent() {
     } else {
         // ── Portrait layout: normal column with back-to-live header ─────────
         com.sentinel.ui.theme.SentinelTheme {
-            Column(Modifier.fillMaxSize()) {
-                // Back button header
+            Column(Modifier.fillMaxSize().navigationBarsPadding()) {
+                // Sticky header — surface extends behind status bar, content sits below it
                 Surface(
                     color = MaterialTheme.colorScheme.surface,
                     tonalElevation = 2.dp,
@@ -200,6 +235,7 @@ private fun MainContent() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .statusBarsPadding()
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {

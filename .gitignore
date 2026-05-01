@@ -18,12 +18,13 @@ backend/data/
 backend/.env
 
 # Root-level data (SQLite DB)
-data/
+/data/
 
 # Web
 web/.next/
 web/node_modules/
 web/.env.local
+web/data/
 
 # Android
 android/.gradle/

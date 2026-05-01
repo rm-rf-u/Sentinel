@@ -32,6 +32,10 @@
     <string name="events_title">이벤트 로그</string>
     <string name="events_empty">이벤트 없음</string>
     <string name="events_load_more">더 보기</string>
+    <string name="events_clear_title">로그 삭제</string>
+    <string name="events_clear_confirm">모든 이벤트 로그를 삭제하시겠습니까?</string>
+    <string name="events_clear_ok">삭제</string>
+    <string name="events_clear_cancel">취소</string>
     <string name="filter_all">전체</string>
     <string name="filter_zone">구역 이탈</string>
     <string name="filter_prone">엎드린 자세</string>
@@ -48,7 +52,10 @@
 
     <!-- Settings screen -->
     <string name="settings_title">설정</string>
-    <string name="settings_server">서버 주소</string>
+    <string name="settings_server">서버 연결</string>
+    <string name="settings_server_address">서버 주소</string>
+    <string name="settings_server_address_hint">예: sentinel-mac.ts.net 또는 100.64.1.1</string>
+    <string name="settings_server_port">포트</string>
     <string name="settings_server_hint">http://your-mac.ts.net:8000</string>
     <string name="settings_sensitivity">감도 설정</string>
     <string name="settings_zone_seconds">구역 이탈 판정 시간</string>
@@ -65,10 +72,21 @@
     <string name="settings_saved">저장되었습니다</string>
     <string name="settings_seconds_unit">초</string>
     <string name="settings_percent_unit">%%</string>
+    <string name="settings_cooldown">알림 쿨다운</string>
+    <string name="settings_cooldown_zone">구역 이탈 알림 간격</string>
+    <string name="settings_cooldown_prone">엎드린 자세 알림 간격</string>
+    <string name="settings_cooldown_cry">울음 알림 간격</string>
+
+    <!-- Disclaimer -->
+    <string name="disclaimer_title">안전 안내</string>
+    <string name="disclaimer_body">Sentinel은 아기 모니터링 보조 도구입니다. 의료기기가 아니며 의료적 판단을 대체하지 않습니다. 항상 직접 확인 및 보호자의 주의와 함께 사용하세요.</string>
 
     <!-- Onboarding -->
     <string name="onboarding_subtitle">아기를 안전하게 지켜보세요.\n서버 주소를 입력하여 시작하세요.</string>
     <string name="onboarding_url_label">서버 주소 (Tailscale)</string>
+    <string name="onboarding_host_label">서버 주소 (Tailscale)</string>
+    <string name="onboarding_host_hint">예: sentinel-mac.ts.net 또는 100.64.1.1</string>
+    <string name="onboarding_port_label">포트</string>
     <string name="onboarding_connect">연결</string>
 
     <!-- Notifications -->

@@ -48,6 +48,14 @@ def _parse_row(row: object) -> dict:
     return d
 
 
+async def clear_all_events() -> int:
+    db = await get_db()
+    async with db.execute("DELETE FROM events") as cur:
+        deleted = cur.rowcount
+    await db.commit()
+    return deleted
+
+
 async def purge_old_events(days: int = 30) -> int:
     db = await get_db()
     cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()

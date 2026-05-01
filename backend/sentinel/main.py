@@ -47,6 +47,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # Event pipeline
     dispatcher = Dispatcher(ws_manager)
     settings = await config_repo.get_settings()
+    dispatcher.update_settings(settings.sensitivity)
     engine = EventEngine(settings, dispatcher)
 
     zone = await config_repo.get_safe_zone()

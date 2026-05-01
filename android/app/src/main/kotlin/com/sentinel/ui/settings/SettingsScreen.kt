@@ -41,17 +41,25 @@ fun SettingsScreen(vm: SettingsViewModel = hiltViewModel()) {
             .widthIn(max = if (isTablet) 700.dp else Int.MAX_VALUE.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text(stringResource(R.string.settings_title), style = MaterialTheme.typography.titleLarge)
-
-        // Server URL
+        // Server connection
         SettingsSection(stringResource(R.string.settings_server)) {
             OutlinedTextField(
-                value = ui.baseUrl,
-                onValueChange = vm::setBaseUrl,
-                placeholder = { Text(stringResource(R.string.settings_server_hint), style = MaterialTheme.typography.bodySmall) },
+                value = ui.serverHost,
+                onValueChange = vm::setServerHost,
+                label = { Text(stringResource(R.string.settings_server_address), style = MaterialTheme.typography.labelSmall) },
+                placeholder = { Text(stringResource(R.string.settings_server_address_hint), style = MaterialTheme.typography.bodySmall) },
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Next),
                 modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+            )
+            OutlinedTextField(
+                value = ui.serverPort,
+                onValueChange = vm::setServerPort,
+                label = { Text(stringResource(R.string.settings_server_port), style = MaterialTheme.typography.labelSmall) },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                modifier = Modifier.width(120.dp),
                 shape = RoundedCornerShape(12.dp),
             )
         }
@@ -85,6 +93,30 @@ fun SettingsScreen(vm: SettingsViewModel = hiltViewModel()) {
                 min = 1f, max = 10f, step = 0.5f,
                 display = { "${it.roundToDecimal(1)}${stringResource(R.string.settings_seconds_unit)}" },
             ) { v -> vm.setSettings(s.copy(sensitivity = s.sensitivity.copy(cry_window_seconds = v.toDouble()))) }
+        }
+
+        // Notification cooldowns
+        SettingsSection(stringResource(R.string.settings_cooldown)) {
+            SliderRow(
+                label = stringResource(R.string.settings_cooldown_zone),
+                value = s.sensitivity.zone_violation_cooldown_seconds.toFloat(),
+                min = 0f, max = 600f, step = 10f,
+                display = { "${it.toInt()}${stringResource(R.string.settings_seconds_unit)}" },
+            ) { v -> vm.setSettings(s.copy(sensitivity = s.sensitivity.copy(zone_violation_cooldown_seconds = v.toDouble()))) }
+
+            SliderRow(
+                label = stringResource(R.string.settings_cooldown_prone),
+                value = s.sensitivity.prone_position_cooldown_seconds.toFloat(),
+                min = 0f, max = 600f, step = 10f,
+                display = { "${it.toInt()}${stringResource(R.string.settings_seconds_unit)}" },
+            ) { v -> vm.setSettings(s.copy(sensitivity = s.sensitivity.copy(prone_position_cooldown_seconds = v.toDouble()))) }
+
+            SliderRow(
+                label = stringResource(R.string.settings_cooldown_cry),
+                value = s.sensitivity.cry_detected_cooldown_seconds.toFloat(),
+                min = 0f, max = 600f, step = 10f,
+                display = { "${it.toInt()}${stringResource(R.string.settings_seconds_unit)}" },
+            ) { v -> vm.setSettings(s.copy(sensitivity = s.sensitivity.copy(cry_detected_cooldown_seconds = v.toDouble()))) }
         }
 
         // Quiet hours

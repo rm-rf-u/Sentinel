@@ -1,6 +1,6 @@
 """Audio inference runner — PANNs CNN14 cry detection in a background thread.
 
-Sliding window: 1-second analysis window, 0.5-second hop (~2 inferences/sec).
+Sliding window: 3-second analysis window, 1-second hop (~1 inference/sec).
 The model needs 32 kHz input; we capture at 16 kHz and resample on the fly.
 Baby cry = AudioSet class 23 ("Baby cry, infant cry").
 """
@@ -23,8 +23,8 @@ logger = structlog.get_logger()
 
 CAPTURE_SR = 16_000
 MODEL_SR = 32_000
-WINDOW_SECONDS = 1.0
-HOP_SECONDS = 0.5
+WINDOW_SECONDS = 3.0
+HOP_SECONDS = 1.0
 
 BABY_CRY_CLASS = 23  # AudioSet index for "Baby cry, infant cry"
 
@@ -47,8 +47,8 @@ class AudioRunner:
         self._loop: asyncio.AbstractEventLoop | None = None
         self._queue: asyncio.Queue[AudioDetection] | None = None
         self._frame_count = 0
-        # Rolling score history (last 3 s ÷ 0.5 s hop = 6 windows)
-        self._score_history: deque[float] = deque(maxlen=6)
+        # Rolling score history (last ~4 s at 1 s/hop = 4 windows)
+        self._score_history: deque[float] = deque(maxlen=4)
 
     def start(self, loop: asyncio.AbstractEventLoop, queue: asyncio.Queue[AudioDetection]) -> None:
         self._loop = loop
@@ -114,6 +114,11 @@ class AudioRunner:
     def _infer(self, model, device: str, audio_16k: np.ndarray) -> float:
         import torch
         from torchaudio.functional import resample
+
+        # Peak-normalise to bring low-gain Mac mics into the [-1,1] range PANNs expects.
+        peak = float(np.abs(audio_16k).max())
+        if peak > 1e-4:
+            audio_16k = audio_16k * (0.9 / peak)
 
         # Resample 16 kHz → 32 kHz (PANNs requirement)
         t = torch.from_numpy(audio_16k).unsqueeze(0)  # (1, samples)

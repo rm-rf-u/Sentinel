@@ -51,6 +51,8 @@ export function useWebRTC() {
       if (!res.ok) throw new Error(`Signaling failed: ${res.status}`);
 
       const answer = await res.json();
+      // Guard: pc may have been closed or replaced while fetch was in-flight
+      if (pc.signalingState === "closed" || pcRef.current !== pc) return;
       await pc.setRemoteDescription(answer);
     } catch (err) {
       console.error("WebRTC connect error:", err);

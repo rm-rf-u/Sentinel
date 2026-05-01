@@ -34,6 +34,12 @@ fun PolygonCanvasOverlay(
     var cursorPos by remember { mutableStateOf<Offset?>(null) }
     var dragTarget by remember { mutableStateOf<Int?>(null) }
 
+    // rememberUpdatedState so the tap lambda always sees the latest vertices/callbacks
+    // without needing to restart the pointerInput coroutine on every state change.
+    val currentVertices by rememberUpdatedState(vertices)
+    val currentOnVerticesChange by rememberUpdatedState(onVerticesChange)
+    val currentOnStateChange by rememberUpdatedState(onStateChange)
+
     val interactive = editorState != EditorState.Idle
 
     Canvas(
@@ -43,15 +49,15 @@ fun PolygonCanvasOverlay(
                     onTap = { offset ->
                         when (editorState) {
                             EditorState.Drawing -> {
-                                if (vertices.size >= 3) {
-                                    val first = vertices.first()
+                                if (currentVertices.size >= 3) {
+                                    val first = currentVertices.first()
                                     val d = Offset(first.x, first.y).minus(offset).getDistance()
                                     if (d <= CLOSE_RADIUS) {
-                                        onStateChange(EditorState.Editing)
+                                        currentOnStateChange(EditorState.Editing)
                                         return@detectTapGestures
                                     }
                                 }
-                                onVerticesChange(vertices + CanvasVertex(offset.x, offset.y))
+                                currentOnVerticesChange(currentVertices + CanvasVertex(offset.x, offset.y))
                             }
                             else -> Unit
                         }

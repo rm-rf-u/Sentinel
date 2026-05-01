@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sentinel.R
@@ -23,7 +26,6 @@ import com.sentinel.ui.theme.*
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 
 @Composable
 fun EventsScreen(vm: EventsViewModel = hiltViewModel()) {
@@ -36,6 +38,26 @@ fun EventsScreen(vm: EventsViewModel = hiltViewModel()) {
 
     var filter by remember { mutableStateOf<String?>(null) }
     val filtered = if (filter == null) events else events.filter { it.type == filter }
+    var showClearDialog by remember { mutableStateOf(false) }
+
+    if (showClearDialog) {
+        AlertDialog(
+            onDismissRequest = { showClearDialog = false },
+            title = { Text(stringResource(R.string.events_clear_title)) },
+            text = { Text(stringResource(R.string.events_clear_confirm)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    vm.clearLogs()
+                    showClearDialog = false
+                }) { Text(stringResource(R.string.events_clear_ok), color = Danger) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showClearDialog = false }) {
+                    Text(stringResource(R.string.events_clear_cancel))
+                }
+            },
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -45,14 +67,37 @@ fun EventsScreen(vm: EventsViewModel = hiltViewModel()) {
             .widthIn(max = if (isTablet) 900.dp else Int.MAX_VALUE.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text(stringResource(R.string.events_title), style = MaterialTheme.typography.titleLarge)
+        // Title + clear button
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                stringResource(R.string.nav_events),
+                style = MaterialTheme.typography.titleMedium,
+            )
+            IconButton(onClick = { showClearDialog = true }) {
+                Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.events_clear_title), tint = Danger)
+            }
+        }
 
-        // Filter chips
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            FilterChip(null, filter, stringResource(R.string.filter_all)) { filter = it }
-            FilterChip("zone_violation", filter, stringResource(R.string.filter_zone)) { filter = it }
-            FilterChip("prone_position", filter, stringResource(R.string.filter_prone)) { filter = it }
-            FilterChip("cry_detected", filter, stringResource(R.string.filter_cry)) { filter = it }
+        // Filter bar — full-width boxed chips
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                FilterChip(null, filter, stringResource(R.string.filter_all), Modifier.weight(1f)) { filter = it }
+                FilterChip("zone_violation", filter, stringResource(R.string.filter_zone), Modifier.weight(1f)) { filter = it }
+                FilterChip("prone_position", filter, stringResource(R.string.filter_prone), Modifier.weight(1f)) { filter = it }
+                FilterChip("cry_detected", filter, stringResource(R.string.filter_cry), Modifier.weight(1f)) { filter = it }
+            }
         }
 
         if (isLoading) {
@@ -80,17 +125,27 @@ fun EventsScreen(vm: EventsViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun FilterChip(value: String?, current: String?, label: String, onClick: (String?) -> Unit) {
+private fun FilterChip(
+    value: String?,
+    current: String?,
+    label: String,
+    modifier: Modifier = Modifier,
+    onClick: (String?) -> Unit,
+) {
     val selected = current == value
     Surface(
         onClick = { onClick(value) },
-        shape = RoundedCornerShape(50),
-        color = if (selected) Primary else MaterialTheme.colorScheme.surfaceVariant,
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        color = if (selected) Primary else Color.Transparent,
     ) {
         Text(
             label,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 4.dp, vertical = 8.dp),
             style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Center,
             color = if (selected) Color.White else TextSecondary,
         )
     }
@@ -129,7 +184,7 @@ fun EventCard(event: SentinelEvent) {
                         )
                     }
                 }
-                Text(relativeTime(event.timestamp), style = MaterialTheme.typography.bodySmall)
+                Text(formatTimestamp(event.timestamp), style = MaterialTheme.typography.bodySmall)
             }
         }
     }
@@ -147,17 +202,9 @@ private fun EmptyState() {
     }
 }
 
-private fun relativeTime(iso: String): String {
-    return runCatching {
-        val then = Instant.parse(iso)
-        val now = Instant.now()
-        val diffS = ChronoUnit.SECONDS.between(then, now)
-        when {
-            diffS < 60   -> "방금 전"
-            diffS < 3600 -> "${diffS / 60}분 전"
-            diffS < 86400 -> "${diffS / 3600}시간 전"
-            else -> DateTimeFormatter.ofPattern("M월 d일 HH:mm")
-                .withZone(ZoneId.systemDefault()).format(then)
-        }
-    }.getOrDefault(iso)
-}
+private fun formatTimestamp(iso: String): String = runCatching {
+    val instant = Instant.parse(iso)
+    DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss")
+        .withZone(ZoneId.systemDefault())
+        .format(instant)
+}.getOrDefault(iso)

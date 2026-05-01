@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import { useEventStream, type SentinelEvent } from "@/hooks/useEventStream";
+import { useEventStreamContext, type SentinelEvent } from "@/context/EventStreamContext";
 
 const PAGE_SIZE = 50;
 
@@ -15,6 +15,7 @@ export function useEvents(filter: EventTypeFilter = "all") {
   const [extraEvents, setExtraEvents] = useState<SentinelEvent[]>([]);
   const [before, setBefore] = useState<string | undefined>(undefined);
   const [hasMore, setHasMore] = useState(true);
+  const { subscribe } = useEventStreamContext();
 
   const { data: initialEvents = [], isLoading } = useQuery<SentinelEvent[]>({
     queryKey: ["events"],
@@ -27,12 +28,12 @@ export function useEvents(filter: EventTypeFilter = "all") {
     staleTime: 0,
   });
 
-  // Prepend real-time events from WebSocket
-  useEventStream(
-    useCallback((event: SentinelEvent) => {
+  // Prepend real-time events from the shared layout-level WebSocket
+  useEffect(() => {
+    return subscribe((event) => {
       setExtraEvents((prev) => [event, ...prev]);
-    }, [])
-  );
+    });
+  }, [subscribe]);
 
   const loadMore = useCallback(async () => {
     if (!before || !hasMore) return;
