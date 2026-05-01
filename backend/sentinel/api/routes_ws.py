@@ -1,13 +1,13 @@
 import structlog
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 
 logger = structlog.get_logger()
 router = APIRouter(tags=["websocket"])
 
 
 @router.websocket("/ws/events")
-async def ws_events(ws: WebSocket, request: Request) -> None:
-    manager = request.app.state.ws_manager
+async def ws_events(ws: WebSocket) -> None:
+    manager = ws.app.state.ws_manager
     await manager.connect(ws)
     try:
         while True:

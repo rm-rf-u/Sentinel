@@ -77,16 +77,13 @@ export default function EventCard({ event }: { event: SentinelEvent }) {
 }
 
 function formatTime(iso: string): string {
-  const date = new Date(iso);
-  const diffMs = Date.now() - date.getTime();
-  const diffS = Math.floor(diffMs / 1000);
-  if (diffS < 60) return "방금 전";
-  if (diffS < 3600) return `${Math.floor(diffS / 60)}분 전`;
-  if (diffS < 86400) return `${Math.floor(diffS / 3600)}시간 전`;
-  return date.toLocaleDateString("ko-KR", {
-    month: "long",
-    day: "numeric",
+  const d = new Date(iso);
+  const date = d.toLocaleDateString("sv-SE"); // YYYY-MM-DD
+  const time = d.toLocaleTimeString("ko-KR", {
     hour: "2-digit",
     minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
   });
+  return `${date} ${time}`;
 }

@@ -2,19 +2,43 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { useWebRTC, type ConnectionStatus } from "@/hooks/useWebRTC";
-import { useEventStream } from "@/hooks/useEventStream";
+import { useWebRTCContext, type ConnectionStatus } from "@/context/WebRTCContext";
+import { useEventStreamContext, type SentinelEvent } from "@/context/EventStreamContext";
 import { useSafeZone, type ZoneMode } from "@/hooks/useSafeZone";
 import PolygonCanvas from "@/components/PolygonCanvas";
 import PolygonToolbar from "@/components/PolygonToolbar";
 import type { Polygon } from "@/lib/geometry";
 
+const EVENT_LABELS: Record<string, string> = {
+  zone_violation: "안전 구역 이탈",
+  prone_position: "엎드린 자세 감지 — 아기를 확인해 주세요",
+  cry_detected: "울음 감지",
+};
+
+const SEVERITY_COLOR: Record<string, string> = {
+  info: "var(--color-accent)",
+  warning: "var(--color-warning)",
+  danger: "var(--color-danger)",
+};
+
 export default function LiveView() {
   const t = useTranslations("liveView");
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { stream, status, connect } = useWebRTC();
+  const { stream, status, connect } = useWebRTCContext();
+  const { subscribe } = useEventStreamContext();
   const { safeZone, isLoading: zoneLoading, save, isSaving } = useSafeZone();
-  useEventStream();
+
+  const [alert, setAlert] = useState<SentinelEvent | null>(null);
+  const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Subscribe to live events and show a timed banner
+  useEffect(() => {
+    return subscribe((event) => {
+      setAlert(event);
+      if (dismissTimer.current) clearTimeout(dismissTimer.current);
+      dismissTimer.current = setTimeout(() => setAlert(null), 6000);
+    });
+  }, [subscribe]);
 
   // Polygon editor state lifted here so toolbar (below video) and canvas (inside video) share it
   const [editorState, setEditorState] = useState<"idle" | "drawing" | "editing">(
@@ -63,6 +87,28 @@ export default function LiveView() {
           )}
         </div>
       </div>
+
+      {/* Real-time event banner */}
+      {alert && (
+        <div
+          className="flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all"
+          style={{
+            backgroundColor: "var(--color-surface)",
+            border: `1.5px solid ${SEVERITY_COLOR[alert.severity] ?? "var(--color-warning)"}`,
+          }}
+        >
+          <span className="text-sm font-medium" style={{ color: "var(--color-text-primary)" }}>
+            {EVENT_LABELS[alert.type] ?? alert.type}
+          </span>
+          <button
+            onClick={() => setAlert(null)}
+            className="text-xs shrink-0"
+            style={{ color: "var(--color-text-secondary)" }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Video + canvas overlay */}
       <div

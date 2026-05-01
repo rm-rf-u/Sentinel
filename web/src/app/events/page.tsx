@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useEvents, type EventTypeFilter } from "@/hooks/useEvents";
 import EventCard from "@/components/EventCard";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 
 const FILTERS: { value: EventTypeFilter; label: string }[] = [
   { value: "all", label: "전체" },
@@ -14,6 +16,16 @@ const FILTERS: { value: EventTypeFilter; label: string }[] = [
 export default function EventsPage() {
   const [filter, setFilter] = useState<EventTypeFilter>("all");
   const { events, isLoading, loadMore, hasMore } = useEvents(filter);
+  const [confirmClear, setConfirmClear] = useState(false);
+  const queryClient = useQueryClient();
+
+  const clearMutation = useMutation({
+    mutationFn: () => api.delete<{ deleted: number }>("/api/events"),
+    onSuccess: () => {
+      queryClient.setQueryData(["events"], []);
+      setConfirmClear(false);
+    },
+  });
 
   return (
     <div className="max-w-5xl mx-auto p-4 flex flex-col gap-4">
@@ -22,23 +34,60 @@ export default function EventsPage() {
         <h1 className="text-xl font-semibold" style={{ color: "var(--color-text-primary)" }}>
           이벤트 로그
         </h1>
-        <div
-          className="flex items-center gap-0.5 rounded-lg p-0.5"
-          style={{ backgroundColor: "var(--color-border)" }}
-        >
-          {FILTERS.map(({ value, label }) => (
+        <div className="flex items-center gap-2">
+          <div
+            className="flex items-center gap-0.5 rounded-lg p-0.5"
+            style={{ backgroundColor: "var(--color-border)" }}
+          >
+            {FILTERS.map(({ value, label }) => (
+              <button
+                key={value}
+                onClick={() => setFilter(value)}
+                className="px-3 py-1 text-sm rounded-md font-medium transition-colors"
+                style={{
+                  backgroundColor: filter === value ? "var(--color-primary)" : "transparent",
+                  color: filter === value ? "white" : "var(--color-text-secondary)",
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          {!confirmClear ? (
             <button
-              key={value}
-              onClick={() => setFilter(value)}
-              className="px-3 py-1 text-sm rounded-md font-medium transition-colors"
+              onClick={() => setConfirmClear(true)}
+              className="px-3 py-1 text-sm rounded-lg font-medium transition-opacity hover:opacity-75"
               style={{
-                backgroundColor: filter === value ? "var(--color-primary)" : "transparent",
-                color: filter === value ? "white" : "var(--color-text-secondary)",
+                backgroundColor: "var(--color-surface)",
+                border: "1px solid var(--color-border)",
+                color: "var(--color-danger)",
               }}
             >
-              {label}
+              로그 삭제
             </button>
-          ))}
+          ) : (
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => clearMutation.mutate()}
+                disabled={clearMutation.isPending}
+                className="px-3 py-1 text-sm rounded-lg font-medium"
+                style={{ backgroundColor: "var(--color-danger)", color: "white" }}
+              >
+                {clearMutation.isPending ? "삭제 중…" : "확인"}
+              </button>
+              <button
+                onClick={() => setConfirmClear(false)}
+                className="px-3 py-1 text-sm rounded-lg font-medium"
+                style={{
+                  backgroundColor: "var(--color-surface)",
+                  border: "1px solid var(--color-border)",
+                  color: "var(--color-text-secondary)",
+                }}
+              >
+                취소
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

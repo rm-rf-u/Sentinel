@@ -22,7 +22,7 @@ class AppPreferences @Inject constructor(
     companion object {
         val BASE_URL = stringPreferencesKey("base_url")
         val ONBOARDED = booleanPreferencesKey("onboarded")
-        const val DEFAULT_URL = "http://100.x.x.x:8000"
+        const val DEFAULT_URL = ""
     }
 
     val baseUrl: Flow<String> = context.dataStore.data.map { prefs ->

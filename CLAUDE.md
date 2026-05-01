@@ -66,6 +66,7 @@ Stable REST + WS endpoints — see `backend/sentinel/api/` for routes.
 | GET/PUT | `/api/safe-zone` | Zone config |
 | GET/PUT | `/api/settings` | Sensitivity, quiet hours |
 | GET | `/api/events` | Paginated log |
+| DELETE | `/api/events` | Clear all events |
 | POST/DELETE | `/api/devices` | FCM token registration |
 | WS | `/ws/events` | Live event stream |
 

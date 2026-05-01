@@ -45,6 +45,7 @@ class EventEngine:
         self._zone_debouncer = Debouncer(settings.sensitivity.zone_violation_seconds)
         self._prone_debouncer = Debouncer(settings.sensitivity.prone_position_seconds)
         self._cry_debouncer = Debouncer(settings.sensitivity.cry_window_seconds)
+        self._dispatcher.update_settings(settings.sensitivity)
 
     # ── Vision path ───────────────────────────────────────────────────────────
 

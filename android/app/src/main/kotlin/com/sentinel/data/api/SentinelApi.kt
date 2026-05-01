@@ -17,6 +17,9 @@ interface SentinelApi {
         @Query("before") before: String? = null,
     ): List<EventDto>
 
+    @DELETE("api/events")
+    suspend fun clearEvents()
+
     @GET("api/settings")
     suspend fun getSettings(): SettingsDto
 

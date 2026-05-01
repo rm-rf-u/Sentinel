@@ -50,8 +50,11 @@ class SafeZone(BaseModel):
 class SensitivitySettings(BaseModel):
     zone_violation_seconds: float = Field(default=2.0, ge=0.5, le=30.0)
     prone_position_seconds: float = Field(default=5.0, ge=1.0, le=60.0)
-    cry_score_threshold: float = Field(default=0.6, ge=0.1, le=1.0)
+    cry_score_threshold: float = Field(default=0.35, ge=0.1, le=1.0)
     cry_window_seconds: float = Field(default=3.0, ge=1.0, le=10.0)
+    zone_violation_cooldown_seconds: float = Field(default=0.0, ge=0.0, le=600.0)
+    prone_position_cooldown_seconds: float = Field(default=0.0, ge=0.0, le=600.0)
+    cry_detected_cooldown_seconds: float = Field(default=0.0, ge=0.0, le=600.0)
 
 
 class QuietHours(BaseModel):

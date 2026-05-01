@@ -25,6 +25,9 @@ data class SensitivityDto(
     val prone_position_seconds: Double = 5.0,
     val cry_score_threshold: Double = 0.6,
     val cry_window_seconds: Double = 3.0,
+    val zone_violation_cooldown_seconds: Double = 0.0,
+    val prone_position_cooldown_seconds: Double = 0.0,
+    val cry_detected_cooldown_seconds: Double = 0.0,
 )
 
 data class QuietHoursDto(

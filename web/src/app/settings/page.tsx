@@ -85,6 +85,31 @@ export default function SettingsPage() {
         />
       </Section>
 
+      {/* Notification cooldowns */}
+      <Section title="알림 쿨다운">
+        <SliderRow
+          label="구역 이탈 알림 간격"
+          unit="초"
+          value={local.sensitivity.zone_violation_cooldown_seconds}
+          min={0} max={600} step={10}
+          onChange={(v) => patchSensitivity("zone_violation_cooldown_seconds", v)}
+        />
+        <SliderRow
+          label="엎드린 자세 알림 간격"
+          unit="초"
+          value={local.sensitivity.prone_position_cooldown_seconds}
+          min={0} max={600} step={10}
+          onChange={(v) => patchSensitivity("prone_position_cooldown_seconds", v)}
+        />
+        <SliderRow
+          label="울음 알림 간격"
+          unit="초"
+          value={local.sensitivity.cry_detected_cooldown_seconds}
+          min={0} max={600} step={10}
+          onChange={(v) => patchSensitivity("cry_detected_cooldown_seconds", v)}
+        />
+      </Section>
+
       {/* Quiet hours */}
       <Section title="방해 금지 시간">
         <ToggleRow

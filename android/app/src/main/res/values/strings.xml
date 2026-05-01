@@ -32,6 +32,10 @@
     <string name="events_title">이벤트 로그</string>
     <string name="events_empty">이벤트 없음</string>
     <string name="events_load_more">더 보기</string>
+    <string name="events_clear_title">로그 삭제</string>
+    <string name="events_clear_confirm">모든 이벤트 로그를 삭제하시겠습니까?</string>
+    <string name="events_clear_ok">삭제</string>
+    <string name="events_clear_cancel">취소</string>
     <string name="filter_all">전체</string>
     <string name="filter_zone">구역 이탈</string>
     <string name="filter_prone">엎드린 자세</string>
@@ -68,6 +72,10 @@
     <string name="settings_saved">저장되었습니다</string>
     <string name="settings_seconds_unit">초</string>
     <string name="settings_percent_unit">%%</string>
+    <string name="settings_cooldown">알림 쿨다운</string>
+    <string name="settings_cooldown_zone">구역 이탈 알림 간격</string>
+    <string name="settings_cooldown_prone">엎드린 자세 알림 간격</string>
+    <string name="settings_cooldown_cry">울음 알림 간격</string>
 
     <!-- Disclaimer -->
     <string name="disclaimer_title">안전 안내</string>

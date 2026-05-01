@@ -106,6 +106,10 @@ private fun AppContent() {
     // Show nothing until DataStore resolves (avoids flicker)
     if (onboarded == null) return
 
+    LaunchedEffect(onboarded) {
+        if (onboarded == true) onboardingVm.refreshFcmToken()
+    }
+
     if (onboarded == false) {
         val activity = LocalContext.current as Activity
         LaunchedEffect(Unit) {

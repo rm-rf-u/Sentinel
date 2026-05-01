@@ -62,6 +62,15 @@ class EventsViewModel @Inject constructor(
             }
         }
     }
+
+    fun clearLogs() {
+        viewModelScope.launch {
+            runCatching { api.clearEvents() }
+            _events.value = emptyList()
+            _hasMore.value = false
+            oldestTimestamp = null
+        }
+    }
 }
 
 private fun EventDto.toDomain() = SentinelEvent(

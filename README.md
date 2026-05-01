@@ -12,7 +12,7 @@ A local-first baby & young-child safety monitor. Sentinel watches a single camer
 - 🟢 **Safe-zone monitoring** — draw a polygon on the live feed; alerts when the child enters or exits (configurable per zone)
 - 🛌 **Prone-position detection** — keypoint-based pose analysis warns when the child has been face-down for too long
 - 😢 **Cry detection** — on-device audio classification
-- 🔕 **Quiet hours & sensitivity tuning** — avoid 3am false-positive spam
+- 🔕 **Quiet hours, sensitivity & cooldowns** — per-event-type notification cooldowns, quiet hours, and threshold tuning to avoid alert spam
 - 📲 **Push notifications** — FCM to web and Android
 - 🇰🇷 **Korean UI** — Pretendard typography, warm "morning nursery" palette
 - 🔒 **Stays on your network** — Tailscale-only access, no cloud, no recording
@@ -169,7 +169,7 @@ When you change a schema in `shared/schemas/`, regenerate web types and update t
 - **Latency over throughput.** WebRTC, lossy ring buffers, decoupled inference loop.
 - **Single source of truth.** JSON schemas in `shared/` drive both backend and web types.
 - **Warm, calm UI.** Deep coral instead of pure red, cream instead of white — quieter at 3am.
-- **No false-positive spam.** Every rule is debounced; quiet hours and sensitivity are first-class settings.
+- **No false-positive spam.** Every rule is debounced; quiet hours, sensitivity thresholds, and per-type notification cooldowns are all first-class settings tunable from the web and Android apps.
 
 ## Color palette
 

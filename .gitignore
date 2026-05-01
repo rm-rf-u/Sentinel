@@ -24,6 +24,7 @@ backend/.env
 web/.next/
 web/node_modules/
 web/.env.local
+web/data/
 
 # Android
 android/.gradle/

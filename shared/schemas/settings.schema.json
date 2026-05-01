@@ -28,15 +28,36 @@
           "type": "number",
           "minimum": 0.1,
           "maximum": 1.0,
-          "default": 0.6,
-          "description": "YAMNet aggregated score required to classify as crying"
+          "default": 0.35,
+          "description": "PANNs CNN14 baby-cry probability (sigmoid) required to classify as crying"
         },
         "cry_window_seconds": {
           "type": "number",
           "minimum": 1.0,
           "maximum": 10.0,
           "default": 3.0,
-          "description": "Window over which cry scores are aggregated"
+          "description": "Duration of sustained crying required before an event fires"
+        },
+        "zone_violation_cooldown_seconds": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 600,
+          "default": 0,
+          "description": "Minimum gap between push notifications for zone violations"
+        },
+        "prone_position_cooldown_seconds": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 600,
+          "default": 0,
+          "description": "Minimum gap between push notifications for prone-position alerts"
+        },
+        "cry_detected_cooldown_seconds": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 600,
+          "default": 0,
+          "description": "Minimum gap between push notifications for cry-detected alerts"
         }
       }
     },

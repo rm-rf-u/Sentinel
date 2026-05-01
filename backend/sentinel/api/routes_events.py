@@ -11,3 +11,9 @@ async def list_events(
     before: str | None = Query(default=None),
 ) -> list[dict]:
     return await events_repo.list_events(limit=limit, before=before)
+
+
+@router.delete("/events")
+async def clear_events() -> dict:
+    deleted = await events_repo.clear_all_events()
+    return {"deleted": deleted}
