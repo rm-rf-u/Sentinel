@@ -18,6 +18,7 @@ class PeerConnectionPool:
     async def create_offer_answer(
         self, sdp: str, sdp_type: str, buffer: FrameBuffer
     ) -> tuple[str, str]:
+        await self.close_all()
         pc = RTCPeerConnection()
         self._pcs.add(pc)
 
